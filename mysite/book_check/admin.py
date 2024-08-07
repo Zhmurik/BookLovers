@@ -1,3 +1,17 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Book, Profile, Author
+
+
+class BookInline(admin.TabularInline):
+    model = Book
+    extra = 1
+
+
+class AuthorAdmin(admin.ModelAdmin):
+    inlines = [BookInline]
+
+
+admin.site.register(Profile)
+admin.site.register(Book)
+admin.site.register(Author, AuthorAdmin)
