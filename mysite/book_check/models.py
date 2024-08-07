@@ -28,10 +28,10 @@ class Book(models.Model):
         (8, 'Detective and Mystery')
     )
     genres = models.IntegerField(verbose_name='Genres', choices=GENRES_TYPES,)
-    description = models.CharField(max_length=500, verbose_name='Book description')
+    description = models.TextField(verbose_name='Book description')
 
     def __str__(self):
-        return f'"{self.title}" -  {self.author}'
+        return f'"{self.title}" -  {self.author.name}'
 
 
 class Profile(models.Model):
