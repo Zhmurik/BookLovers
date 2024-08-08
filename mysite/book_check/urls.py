@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import BookView, SingleBookView, BookListView, profile, author_detail
+from .views import BookView, SingleBookView, BookListView, profile, author_detail, home
 
 urlpatterns = [
+    path('', home, name='home'),
     path('books/', BookListView.as_view(), name='book-list'),
     path('api/book/', BookView.as_view(), name='book_list-api'),
     path('api/book/<int:pk>', SingleBookView.as_view()),

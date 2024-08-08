@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,11 +26,12 @@
                 })
                 .catch(error => console.error('Error fetching books:', error));
         });
-
     </script>
 </head>
 <body>
     <h1>List of Books</h1>
     <ul id="book-list"></ul>
+    <a href="{% url 'home' %}">Back to Home</a>
 </body>
 </html>
+{% endblock %}

@@ -30,3 +30,7 @@ def profile(request):
 def author_detail(request, author_id):
     author = get_object_or_404(Author, id=author_id)
     return render(request, 'author_detail.html', {'author': author})
+
+
+def home(request):
+    return render(request, 'home.html')
