@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>BookLovers</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+
+    <div class="signup_header">
+        <a href="" target="_blank"></a>
+    </div>
+ <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="signup_body w-50 p-4 border rounded shadow-sm bg-light">
+        <form class="login_form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="{{ form.username.id_for_label }}" class="form-label">
+                    Username
+                </label>
+                {{ form.username|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.password.id_for_label }}" class="form-label">
+                    Password
+                </label>
+                {{ form.password|add_class:"form-control" }}
+            </div>
+            <div class="d-grid">
+                <button class="btn btn-primary btn_log_in" type="submit">Log in</button>
+            </div>
+            <div class="text-center mt-3">
+                <a href="/reset_password" class="d-block mb-2">Reset password</a>
+                <p>Don't have an account?</p>
+                <a class="btn btn-secondary btn_sign_up" href="/signup">Sign Up for Book Lovers</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

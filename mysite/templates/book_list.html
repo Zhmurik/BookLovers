@@ -20,7 +20,10 @@
                     const bookList = document.getElementById('book-list');
                     data.forEach(book => {
                         const li = document.createElement('li');
-                        li.innerHTML = `${book.title} - ${book.author} (Published: ${book.published_date})`;
+                        const a = document.createElement('a');
+                        a.href = `/books/${book.id}/`;  <!-- Assuming the detail view URL pattern is something like 'books/<id>/' -->
+                        a.innerHTML = `${book.title} - ${book.author} (Published: ${book.published_date})`;
+                        li.appendChild(a);
                         bookList.appendChild(li);
                     });
                 })

@@ -1,0 +1,41 @@
+<!-- single_book.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ book.title }}</h1>
+            <h4 class="text-muted">by {{ book.author.name }}</h4>
+            <p><strong>Published Date:</strong> {{ book.published_date }}</p>
+            <p><strong>Genre:</strong> {{ book.get_genres_display }}</p>
+            <p><strong>Description:</strong></p>
+            <p>{{ book.description }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/book/')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const bookList = document.getElementById('book-list');
+                data.forEach(book => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `/books/${book.id}/`;  // Link to the HTML view
+                    a.innerHTML = `${book.title} - ${book.author} (Published: ${book.published_date})`;
+                    li.appendChild(a);
+                    bookList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching books:', error));
+    });
+</script>

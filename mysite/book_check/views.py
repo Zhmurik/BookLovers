@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import TemplateView
-from rest_framework import generics
+from django.views.generic import TemplateView, DetailView
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Book, Author
 from .serializers import BookDetailSerializer
@@ -19,6 +21,25 @@ class BookListView(TemplateView):
 class SingleBookView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookDetailSerializer
+
+
+class SingleBookView(DetailView):
+    model = Book
+    template_name = 'single_book.html'
+    context_object_name = 'book'
+
+
+class AddBookToProfile(APIView):
+    def post(self, request):
+        serializer = BookDetailSerializer(data=request.data, context={'users': request.user})
+        if serializer.is_valid():
+            serializer.save()
+            book_id = serializer.validated_data.get('book_id')
+            book = Book.objects.get(id=book_id)
+            return Response({'message': 'Book added to profile successfully.',
+                             'book': serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @login_required
 def profile(request):

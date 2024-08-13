@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="signup_body w-50 p-4 border rounded shadow-sm bg-light">
+        <form class="login_form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <span class='label signup-title center-align d-block mb-4'>Sign up for free to read with Book Lovers.</span>
+
+            <div class="mb-3">
+                <label for="{{ form.username.id_for_label }}" class="form-label">
+                    What's your name?
+                    {% if form.username.errors %}
+                        <span style="color:#f79862;">Username already exists</span>
+                    {% endif %}
+                </label>
+                {{ form.username|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                    What's your email?
+                    {% if form.email.errors %}
+                        <span style="color:#f79862;">Email already exists</span>
+                    {% endif %}
+                </label>
+                {{ form.email|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.password1.id_for_label }}" class="form-label">
+                    Create a password
+                </label>
+                {{ form.password1|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.password2.id_for_label }}" class="form-label">
+                    Confirm your password
+                </label>
+                {{ form.password2|add_class:"form-control" }}
+            </div>
+
+            <div class="d-grid mb-3">
+                <button class="btn btn-primary btn_log_in" type="submit">Sign up</button>
+            </div>
+
+            <div class="text-center mt-3">
+                <p>Already have an account? <a href="/login">Log in</a>.</p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

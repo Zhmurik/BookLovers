@@ -1,0 +1,35 @@
+
+{% {% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="https://cdn.discordapp.com/icons/715958380556058684/773d6583cd1d7aef41e701783d353aef.webp?size=128" type="image/x-icon">
+<meta name="description" itemprop="description"
+        content="Play your playlists and favourites tracks, albums, and artists " />
+    <meta name="keywords"
+        content="convert, convert playlists, transfer, syncing, smart links, free, apple music, streaming services" />
+  {% block css %}
+	<link rel="stylesheet" href="{% static "formStyle.css" %}">
+  {% endblock %}
+	<title>Youttify</title>
+</head>
+
+<body>
+    <div class="signup_header">
+        <a href="" target="_blank"></a>
+    </div>
+
+    <div class="login_form">
+            <label class="'label signup-title center-align'">You have logget out</label>
+            <div class="label">
+                <p>You have logget out of your account. We're waiting again</p>
+            </div>
+        <div class="divider"></div>
+        <a class='btn btn_sign_up' href="/login">Log in for Lushlyrics</a>
+    </div>
+
+</body>
+</html>
