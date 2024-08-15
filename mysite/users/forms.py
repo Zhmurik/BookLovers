@@ -9,13 +9,13 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'plaseholder': 'Enter your username'})
         self.fields['email'].widget.attrs.update({'placeholder': 'Enter your email'})
-        self.fields['password'].widget.attrs.update({'placeholder': 'Create password'})
+        self.fields['password1'].widget.attrs.update({'placeholder': 'Create password'})
         self.fields['password2'].widget.attrs.update({'placeholder': 'Re-type your password'})
 
     def save(self, commit=True):
@@ -27,11 +27,6 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserLoginForm(AuthenticationForm):
-
-    class Meta:
-        model = User
-        fields = ('username', 'password')
-
     def __init__(self, *args, **kwargs):
         super(CustomUserLoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'placeholder': 'Enter your username'})

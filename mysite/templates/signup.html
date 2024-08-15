@@ -7,6 +7,23 @@
     <div class="signup_body w-50 p-4 border rounded shadow-sm bg-light">
         <form class="login_form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
+
+            <!-- Display form errors here -->
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            <li>{{ form.non_field_errors|striptags }}</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+
             <span class='label signup-title center-align d-block mb-4'>Sign up for free to read with Book Lovers.</span>
 
             <div class="mb-3">
@@ -54,3 +71,4 @@
     </div>
 </div>
 {% endblock %}
+

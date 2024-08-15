@@ -2,21 +2,10 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<title>BookLovers</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-
-<body>
-
-    <div class="signup_header">
-        <a href="" target="_blank"></a>
-    </div>
- <div class="container d-flex justify-content-center align-items-center vh-100">
+<div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="signup_body w-50 p-4 border rounded shadow-sm bg-light">
+        {% for error in form.non_field_errors %}{{ error }}
+        {% endfor %}.
         <form class="login_form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">
@@ -42,10 +31,4 @@
         </form>
     </div>
 </div>
-
-    </div>
-
-</body>
-
-</html>
 {% endblock %}

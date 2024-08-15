@@ -1,66 +1,73 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Profile - {{ profile.user.username }}{% endblock %}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>User Profile</title>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('add-book-form').addEventListener('submit', function(event) {
-                event.preventDefault();
+<div class="container mt-5">
+    <h1 class="text-center">Welcome, {{ profile.user.username }}!</h1>
+    <hr>
+    <h3>Books you've read</h3>
+    {% if read_books %}
+        <ul>
+            {% for book in read_books %}
+                <li>
+                    <a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a> by {{ book.author.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't added any books yet.</p>
+    {% endif %}
 
-                const bookId = document.getElementById('book-id').value;
-
-                fetch('/api/add-book/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({ book_id: bookId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.book) {
-                        const bookList = document.getElementById('book-list');
-                        const li = document.createElement('li');
-                        li.textContent = `${data.book.title} by ${data.book.author}`;
-                        bookList.appendChild(li);
-                        document.getElementById('message').textContent = data.message;
-                    } else {
-                        document.getElementById('message').textContent = data.error;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error adding book:', error);
-                    document.getElementById('message').textContent = 'Failed to add book.';
-                });
-            });
-        });
-    </script>
-</head>
-<body>
-    <h1>Profile {{ profile.user.username }}</h1>
-    <h2> Books read </h2>
-    <ul>
-        {% for book in read_books %}
-            <li>{{ book.title }} - {{ book_author }}</li>
-        {% endfor %}
-    </ul>
-    <h1>Add Book to Profile</h1>
-    <form id="add-book-form">
+    <hr>
+    <h5>Add a Book</h5>
+    <form id="add-book-form" method="POST">
         {% csrf_token %}
-        <label for="book-id">Book ID:</label>
-        <input type="text" id="book-id" name="book_id" required>
-        <button type="submit">Add Book</button>
+        <div class="mb-3">
+            <input type="text" id="book-title" name="book_title" class="form-control" placeholder="Enter book Title" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Book</button>
     </form>
-    <ul id="book-list">
-        <!-- List of books will be appended here -->
+
+    <ul id="book-list" class="mt-3">
+        <!-- List of newly added books will be appended here -->
     </ul>
-    <p id="message"></p>
-</body>
-</html>
+
+    <p id="message" class="mt-3 text-danger"></p>
+</div>
+
+<script>
+    document.getElementById('add-book-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const bookTitle = document.getElementById('book-title').value;
+
+        fetch('/api/add-book/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ title: bookTitle })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.book) {
+                const bookList = document.getElementById('book-list');
+                const li = document.createElement('li');
+                li.textContent = `${data.book.title} by ${data.book.author}`;
+                bookList.appendChild(li);
+                document.getElementById('message').textContent = data.message;
+            } else {
+                document.getElementById('message').textContent = data.error || 'Failed to add book.';
+            }
+        })
+        .catch(error => {
+            console.error('Error adding book:', error);
+            document.getElementById('message').textContent = 'Failed to add book.';
+        });
+    });
+</script>
+
 {% endblock %}

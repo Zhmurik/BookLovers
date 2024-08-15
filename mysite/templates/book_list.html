@@ -18,21 +18,30 @@
                 })
                 .then(data => {
                     const bookList = document.getElementById('book-list');
-                    data.forEach(book => {
-                        const li = document.createElement('li');
-                        const a = document.createElement('a');
-                        a.href = `/books/${book.id}/`;  <!-- Assuming the detail view URL pattern is something like 'books/<id>/' -->
-                        a.innerHTML = `${book.title} - ${book.author} (Published: ${book.published_date})`;
-                        li.appendChild(a);
-                        bookList.appendChild(li);
-                    });
+                    if (data.length === 0) {
+                        bookList.innerHTML = '<li>No books available</li>';
+                    } else {
+                        data.forEach(book => {
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.href = `/books/${book.id}/`;  // Assuming the detail view URL pattern is something like 'books/<id>/'
+                            a.innerHTML = `${book.title} - ${book.author} (Published: ${book.published_date})`;
+                            li.appendChild(a);
+                            bookList.appendChild(li);
+                        });
+                    }
                 })
-                .catch(error => console.error('Error fetching books:', error));
+                .catch(error => {
+                    console.error('Error fetching books:', error);
+                    const bookList = document.getElementById('book-list');
+                    bookList.innerHTML = '<li>Error fetching books</li>';
+                });
         });
     </script>
 </head>
 <body>
-    <h1>List of Books</h1>
+    <h1 class="text-center">Library</h1>
+    <hr>
     <ul id="book-list"></ul>
     <a href="{% url 'home' %}">Back to Home</a>
 </body>
