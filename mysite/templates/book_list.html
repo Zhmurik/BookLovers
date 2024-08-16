@@ -9,41 +9,89 @@
     <title>Books</title>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/api/book/')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const bookList = document.getElementById('book-list');
-                    if (data.length === 0) {
-                        bookList.innerHTML = '<li>No books available</li>';
-                    } else {
-                        data.forEach(book => {
+            function fetchBooks(page) {
+                fetch(`/api/book/?page=${page}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const bookList = document.getElementById('book-list');
+                        bookList.innerHTML = '';  // Clear existing books
+
+                        data.results.forEach(book => {
                             const li = document.createElement('li');
-                            const a = document.createElement('a');
-                            a.href = `/books/${book.id}/`;  // Assuming the detail view URL pattern is something like 'books/<id>/'
-                            a.innerHTML = `${book.title} - ${book.author} (Published: ${book.published_date})`;
-                            li.appendChild(a);
+                            li.classList.add('list-group-item');
+                            // Create a link for each book
+                            const link = document.createElement('a');
+                            link.href = `/books/${book.id}/`;  // Assuming the URL pattern for book details
+                            link.textContent = `${book.title} by ${book.author}`;
+                            link.classList.add('text-decoration-none');
+                            li.appendChild(link);
                             bookList.appendChild(li);
                         });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching books:', error);
-                    const bookList = document.getElementById('book-list');
-                    bookList.innerHTML = '<li>Error fetching books</li>';
-                });
+
+                        // Update pagination controls
+                        const pagination = document.getElementById('pagination');
+                        pagination.innerHTML = '';  // Clear existing pagination controls
+                        const totalPages = Math.ceil(data.count / 8);  // Assuming 8 items per page
+
+                        // Previous button
+                        if (page > 1) {
+                            const prev = document.createElement('li');
+                            prev.classList.add('page-item');
+                            prev.innerHTML = `<a class="page-link" href="#" data-page="${page - 1}">Previous</a>`;
+                            pagination.appendChild(prev);
+                        }
+
+                        // Page buttons
+                        for (let i = 1; i <= totalPages; i++) {
+                            const li = document.createElement('li');
+                            li.classList.add('page-item');
+                            if (i === page) {
+                                li.classList.add('active');
+                                li.setAttribute('aria-current', 'page');
+                            }
+                            li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+                            pagination.appendChild(li);
+                        }
+
+                        // Next button
+                        if (page < totalPages) {
+                            const next = document.createElement('li');
+                            next.classList.add('page-item');
+                            next.innerHTML = `<a class="page-link" href="#" data-page="${page + 1}">Next</a>`;
+                            pagination.appendChild(next);
+                        }
+
+                        // Add click event listener to pagination links
+                        document.querySelectorAll('#pagination .page-link').forEach(link => {
+                            link.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                const page = event.target.getAttribute('data-page');
+                                if (page) {
+                                    fetchBooks(page);
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => console.error('Error fetching books:', error));
+            }
+
+            fetchBooks(1);  // Load the first page initially
         });
     </script>
 </head>
 <body>
     <h1 class="text-center">Library</h1>
     <hr>
-    <ul id="book-list"></ul>
-    <a href="{% url 'home' %}">Back to Home</a>
+    <ul id="book-list" class="list-group"></ul>
+    <nav aria-label="Pagination">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+    </nav>
+    <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
 </body>
 </html>
 {% endblock %}

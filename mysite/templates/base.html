@@ -27,13 +27,21 @@
                             <a class="nav-link" href="{% url 'book-list' %}">Books</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{% url 'author-list' %}">Authors</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'profile' %}">Profile</a>
                         </li>
                 </ul>
                 <form class="d-flex ms-auto" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control me-2" type="search" placeholder="Book, author" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+                {% if user.is_authenticated %}
+                    <a class="btn btn-outline-primary ms-3" href="{% url 'logout' %}" role="button">Logout</a>
+                {% else %}
+                    <a class="btn btn-outline-primary ms-3" href="{% url 'login' %}" role="button">Login</a>
+                {% endif %}
             </div>
           </div>
         </nav>

@@ -131,3 +131,8 @@ LOGIN_URL = 'login/'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
+# REST_FRAMEWORK = {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.LimitOfsetPagination',
+#     'PAGE_SIZE': 8
+# }
+

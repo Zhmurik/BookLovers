@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import BookView, SingleBookView, BookListView, ProfileView, author_detail, home, AddBookToProfileView, profile_view
+from .views import (BookView, SingleBookView, BookListView, ProfileView, author_detail,
+                    home, AddBookToProfileView, profile_view, author_list)
 
 urlpatterns = [
     path('', home, name='home'),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('api/profile/', ProfileView.as_view(), name='api-profile'),
     path('profile/', profile_view, name='profile'),
     path('author/<int:author_id>/', author_detail, name='author_detail'),
+    path('authors/', author_list, name='author-list')
 ]

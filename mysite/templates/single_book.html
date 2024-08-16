@@ -1,4 +1,3 @@
-<!-- single_book.html -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -6,7 +5,9 @@
     <div class="row">
         <div class="col-md-8">
             <h1>{{ book.title }}</h1>
-            <h4 class="text-muted">by {{ book.author.name }}</h4>
+            <h4 class="text-muted">
+                by <a href="{% url 'author_detail' book.author.pk %}">{{ book.author.name }}</a>
+            </h4>
             <p><strong>Published Date:</strong> {{ book.published_date }}</p>
             <p><strong>Genre:</strong> {{ book.get_genres_display }}</p>
             <p><strong>Description:</strong></p>
