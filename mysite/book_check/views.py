@@ -83,7 +83,9 @@ def author_detail(request, author_id):
 
 
 def home(request):
+    books = Book.objects.order_by('?')[:8]
     context = {
-        'username': request.user.username if request.user.is_authenticated else 'Guest'
+        'username': request.user.username if request.user.is_authenticated else 'Guest',
+        'books': books
     }
     return render(request, 'home.html', context)
