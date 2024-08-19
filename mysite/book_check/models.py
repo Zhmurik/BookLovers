@@ -29,6 +29,7 @@ class Book(models.Model):
     )
     genres = models.IntegerField(verbose_name='Genres', choices=GENRES_TYPES,)
     description = models.TextField(verbose_name='Book description')
+    cover_image = models.ImageField(upload_to='book_covers/', null=True, blank=True)
 
     def __str__(self):
         return f'"{self.title}" -  {self.author.name}'

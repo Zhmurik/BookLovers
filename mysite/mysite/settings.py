@@ -136,3 +136,5 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 #     'PAGE_SIZE': 8
 # }
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -7,7 +7,7 @@ from .models import Profile, Book
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'published_date', 'genres', 'description']
+        fields = ['id', 'title', 'author', 'published_date', 'genres', 'description', 'cover_image']
 
 
 # Serializer for the User model

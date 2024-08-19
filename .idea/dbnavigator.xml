@@ -6,7 +6,7 @@
   </component>
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -30,7 +30,17 @@
     <connection id="27ea583f-f8ab-4c82-809f-c6cb9ae9604d" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="27ea583f-f8ab-4c82-809f-c6cb9ae9604d" dataset="db.book_check_profile_read_books" active-filter-id="5a85a828-79cd-44b7-acc6-8a82fa265eaa">
+      <filter id="5a85a828-79cd-44b7-acc6-8a82fa265eaa" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
     <filter-actions connection-id="27ea583f-f8ab-4c82-809f-c6cb9ae9604d" dataset="db.book_check_book" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="27ea583f-f8ab-4c82-809f-c6cb9ae9604d" dataset="db.auth_user" active-filter-id="910d1ee8-f4e3-4327-95d4-33613d1198f6">
+      <filter id="910d1ee8-f4e3-4327-95d4-33613d1198f6" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
+    <filter-actions connection-id="27ea583f-f8ab-4c82-809f-c6cb9ae9604d" dataset="db.book_check_profile" active-filter-id="75fbab8a-0f97-4501-8aec-18815d387d79">
+      <filter id="75fbab8a-0f97-4501-8aec-18815d387d79" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
+    <filter-actions connection-id="27ea583f-f8ab-4c82-809f-c6cb9ae9604d" dataset="db.django_admin_log" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
@@ -526,5 +536,9 @@
         </visibility-settings>
       </environment>
     </general-settings>
+  </component>
+  <component name="DBNavigator.Project.StatementExecutionManager">
+    <execution-variables />
+    <execution-variable-types />
   </component>
 </project>
