@@ -81,3 +81,20 @@ a:hover {
 .p-20 {
     padding: 20px;
 }
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-to-profile {
+    margin-left: auto; /* Расположить кнопку справа */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.add-to-profile:hover {
+    background-color: #f8f9fa; /* Легкий фон при наведении */
+}

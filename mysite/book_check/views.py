@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import DetailView, ListView
 from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -20,9 +21,26 @@ class BookView(generics.ListCreateAPIView):
     serializer_class = BookSerializer
     pagination_class = BookPagination
 
+    def get_queryset(self):
+        queryset = Book.objects.all()
+        search_query = self.request.query_params.get('search', '')
+        if search_query:
+            queryset = queryset.filter(title__icontains=search_query)
+        return queryset
 
-class BookListView(TemplateView):
+
+class BookListView(ListView):
+    model = Book
     template_name = 'book_list.html'
+    context_object_name = 'books'
+    paginate_by = 8
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            queryset = queryset.filter(title__icontains=search_query)
+        return queryset
 
 
 class SingleBookView(generics.RetrieveUpdateDestroyAPIView):
@@ -89,3 +107,17 @@ def home(request):
         'books': books
     }
     return render(request, 'home.html', context)
+
+
+class BookSearchView(ListView):
+    model = Book
+    template_name = 'book_search_results.html'
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Book.objects.filter(
+                Q(title__icontains=query) | Q(author__name__icontains=query)
+            )
+        return Book.objects.none()
