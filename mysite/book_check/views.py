@@ -79,10 +79,10 @@ class AddBookToProfileView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@login_required
+@login_required(login_url='/login/')
 def profile_view(request):
     profile = request.user.profile
-    read_books = profile.read_books.all()  # Fetch the books the user has read
+    read_books = profile.read_books.all()
     context = {
         'profile': profile,
         'read_books': read_books

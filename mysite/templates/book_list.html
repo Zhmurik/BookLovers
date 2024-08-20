@@ -56,16 +56,16 @@
                             // Create a link for each book
                             const link = document.createElement('a');
                             link.href = `/books/${book.id}/`;  // Assuming the URL pattern for book details
-                            link.textContent = `${book.title} by ${book.author}`;
+                            link.textContent = `${book.title} by ${book.author.name}`;
                             link.classList.add('text-decoration-none');
                             li.appendChild(link);
 
                             // Create "Add to Profile" button
                             const addButton = document.createElement('button');
                             addButton.textContent = 'Add to Profile';
-                            addButton.classList.add('btn', 'btn-outline-primary', 'ms-2'); // 'ms-2' adds margin start
+                            addButton.classList.add('btn', 'btn-outline-success', 'ms-2'); // 'ms-2' adds margin start
                             addButton.addEventListener('click', function() {
-                                addToProfile(book.title); // Передача названия книги
+                                addToProfile(book.title);
                             });
 
                             li.appendChild(addButton);

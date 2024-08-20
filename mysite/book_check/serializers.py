@@ -1,23 +1,28 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Profile, Book
+from .models import Profile, Book, Author
 
 
-# Serializer for the Book model
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['name']
+
+
 class BookSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer()
+
     class Meta:
         model = Book
         fields = ['id', 'title', 'author', 'published_date', 'genres', 'description', 'cover_image']
 
 
-# Serializer for the User model
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email']
 
 
-# Serializer for the Profile model
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)  # Show user details
     read_books = BookSerializer(many=True, read_only=True)  # Display books
@@ -27,7 +32,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['user', 'read_books']
 
 
-# Serializer for adding books to profile by title
 class AddBookToProfileSerializer(serializers.Serializer):
     title = serializers.CharField()
 
