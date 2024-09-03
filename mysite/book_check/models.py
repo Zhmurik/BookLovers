@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 from django.conf import settings
 from django.db import models
 
@@ -43,3 +43,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.user.username} - {self.book.title}: {self.rating}'

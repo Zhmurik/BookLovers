@@ -8,7 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Book, Author, Profile
+from .models import Book, Author, Profile, Rating
 from .serializers import BookSerializer, AddBookToProfileSerializer, ProfileSerializer
 
 
@@ -102,7 +102,9 @@ def author_detail(request, author_id):
 
 def home(request):
     books = Book.objects.order_by('?')[:8]
+    recommended_books = recommend_books(request.user)
     context = {
+        'recommended_books': recommended_books[:4],
         'username': request.user.username if request.user.is_authenticated else 'Guest',
         'books': books
     }
@@ -121,3 +123,56 @@ class BookSearchView(ListView):
                 Q(title__icontains=query) | Q(author__name__icontains=query)
             )
         return Book.objects.none()
+
+
+def recommend_books(user):
+    profile = user.profile
+    read_books = profile.read_books.all()
+    read_authors = []
+    for book in read_books:
+        read_authors.append(book.author)
+    recommended_books = []
+    for author in read_authors:
+        author_books = Book.objects.filter(author=author)
+        for book in author_books:
+            if book not in read_books:
+                recommended_books.append(book)
+
+    return recommended_books
+
+
+
+
+# def get_similar_users(user):
+#     ratings = Rating.objects.filter(user=user)
+#     similar_users = {}
+#
+#     for rating in ratings:
+#         same_book_ratings = Rating.objects.filter(book=rating.book).exclude(user=user)
+#         for r in same_book_ratings:
+#             if r.user in similar_users:
+#                 similar_users[r.user] +=1
+#             else:
+#                 similar_users[r.user] = 1
+#     similar_users = sorted(similar_users.items(), key=lambda x: x[1], reverse=True)
+#     return [user for user, count in similar_users]
+#
+#
+# def recommend_books(user):
+#     similar_users = get_similar_users(user)
+#     recommended_books = set()
+#
+#     for similar_user in similar_users:
+#         rating = Rating.objects.filter(user=similar_user).order_by('-rating')
+#         for rating in rating:
+#             if rating.book not in recommended_books and not Rating.objects.filter(user=user, book=rating.book).existst():
+#                 recommended_books.add(rating.book)
+#                 if len(recommended_books) >= 6:
+#                     break
+#         if len(recommended_books) >= 6:
+#             break
+#     return list(recommended_books)
+#
+#
+
+
