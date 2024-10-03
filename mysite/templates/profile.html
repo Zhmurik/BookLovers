@@ -7,19 +7,20 @@
 <div class="container mt-5">
     <h1 class="text-center">Hello, {{ profile.user.username }}!</h1>
     <hr>
-    <h3>Books you've read</h3>
-    {% if read_books %}
-        <ul>
-            {% for book in read_books %}
-                <li>
-                    <a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a> by {{ book.author.name }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>You haven't added any books yet.</p>
-    {% endif %}
-
+    <div class="containerProfile">
+        <h3>Books you've read</h3>
+        {% if read_books %}
+            <ul>
+                {% for book in read_books %}
+                    <li>
+                        <a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a> by {{ book.author.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You haven't added any books yet.</p>
+        {% endif %}
+    </div>
     <hr>
 </div>
 <div>
@@ -30,7 +31,7 @@
         <div class="mb-3">
             <input type="text" id="book-title" name="book_title" class="form-control" placeholder="Enter book Title" required>
         </div>
-        <button type="submit" class="btn btn-primary">Add Book</button>
+        <button type="submit" class="btn btn-outline-success">Add Book</button>
     </form>
 
     <ul id="book-list" class="mt-3">

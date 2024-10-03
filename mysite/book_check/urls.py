@@ -1,9 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
-
+from rest_framework.routers import DefaultRouter
 
 from .views import (BookView, SingleBookView, BookListView, ProfileView, author_detail,
-                    home, AddBookToProfileView, profile_view, author_list, BookSearchView)
+                    home, AddBookToProfileView, profile_view, author_list, BookSearchView, UserBookViewSet)
+
+router = DefaultRouter()
+router.register(r'user-books', UserBookViewSet, basename='userbook')
+
 
 urlpatterns = [
     path('', home, name='home'),
@@ -18,3 +22,5 @@ urlpatterns = [
     path('authors/', author_list, name='author-list'),
     path('books/search/', BookSearchView.as_view(), name='book-search'),
 ]
+
+urlpatterns += router.urls

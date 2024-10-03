@@ -1,15 +1,17 @@
+import random
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Book, Author, Profile, Rating
-from .serializers import BookSerializer, AddBookToProfileSerializer, ProfileSerializer
+from .models import Book, Author, Profile, Rating, UserBook
+from .serializers import BookSerializer, AddBookToProfileSerializer, ProfileSerializer, UserBookSerializer
 
 
 class BookPagination(PageNumberPagination):
@@ -101,8 +103,9 @@ def author_detail(request, author_id):
 
 
 def home(request):
-    books = Book.objects.order_by('?')[:8]
+    books = Book.objects.order_by('?')[:6]
     recommended_books = recommend_books(request.user)
+    random.shuffle(recommended_books)
     context = {
         'recommended_books': recommended_books[:4],
         'username': request.user.username if request.user.is_authenticated else 'Guest',
@@ -139,6 +142,24 @@ def recommend_books(user):
                 recommended_books.append(book)
 
     return recommended_books
+
+
+class UserBookViewSet(viewsets.ModelViewSet):
+    serializer_class = UserBookSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user_profile = self.user.profile
+        return UserBook.objects.filter(user_profile=user_profile)
+
+    def perform_create(self, serializer):
+        user_profile = self.request.user.profile
+        serializer.save(user_profile=user_profile)
+
+    def perform_update(self, serializer):
+        serializer.save
+
+
 
 
 

@@ -1,100 +1,90 @@
-/* General site container */
+/* styles.css */
+html, body {
+    height: 100%;
+    margin: 0; /* Remove any default margins */
+    padding: 0;
+}
+body {
+    padding-top: 100px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8)), url('/static/img/index.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: contrast(100%);
+}
+
+
+
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
     padding: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-top: 60px; /* Optional: space above main content */
+    padding-bottom: 10px; /* Optional: additional bottom padding */
+    background-color: rgba(229, 210, 211, 0.3);
 }
 
-/* Header and footer styling */
-header, footer {
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #dee2e6;
-    border-top: 1px solid #dee2e6;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-/* Form styling */
-form {
+.containerProfile {
     padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin-top: 60px; /* Optional: space above main content */
+    padding-bottom: 10px; /* Optional: additional bottom padding */
+    background-color: rgba(229, 210, 211, 0.8);
 }
 
-/* Input fields styling */
-form input[type="text"],
-form input[type="password"],
-form input[type="email"],
-form select,
-form textarea {
-    width: 100%;
+.list-group {
+    background-color: rgba(229, 210, 211, 0.8);
+}
+
+#book-list, #pagination {
+    background-color: rgba(229, 210, 211, 0.4); /* Белый фон с прозрачностью 80% */
+    border-radius: 10px; /* Края будут округлены */
+    padding: 15px; /* Дополнительное внутреннее расстояние */
+}
+
+.btn-custom {
+    background-color: #28a745; /* The '!important' ensures it overrides Bootstrap */
+    color: white
+}
+
+#book-list li {
+    background-color: rgba(229, 210, 211, 0.5); /* Полупрозрачный белый фон для каждого элемента списка */
+    margin-bottom: 10px; /* Пространство между элементами списка */
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+    border-radius: 5px;
+}
+#pagination {
+    background-color: rgba(0, 0, 0, 0,5); /* Полупрозрачный черный фон для контейнера пагинации */
+}
+#pagination li {
+    background-color: rgba(0, 0, 0, 0); /* Полупрозрачный белый фон для каждого элемента пагинации */
+    margin: 5px; /* Пространство между элементами пагинации */
+    padding: 10px;
+    border-radius: 5px;
 }
 
-/* Button styling */
-form button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    color: #ffffff;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
-}
-
-form button[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-/* Link styling */
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Utility classes for margins and padding */
-.mt-20 {
-    margin-top: 20px;
-}
-
-.mb-20 {
-    margin-bottom: 20px;
-}
-
-.p-20 {
-    padding: 20px;
+#pagination li a {
+    color: #000; /* Цвет текста */
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
 }
 
 .list-group-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: rgba(229, 210, 211, 0.8);
 }
 
-.add-to-profile {
-    margin-left: auto; /* Расположить кнопку справа */
-    border: none;
-    background: transparent;
-    cursor: pointer;
+main {
+    padding-left: 20px; /* Indent from the left */
+    padding-right: 20px; /* Indent from the right */
+    margin-top: 60px; /* Optional: space above main content */
 }
 
-.add-to-profile:hover {
-    background-color: #f8f9fa; /* Легкий фон при наведении */
+footer {
+    padding-left: 20px; /* Indent from the left */
+    padding-right: 20px; /* Indent from the right */
+    padding-bottom: 10px; /* Optional: additional bottom padding */
+    margin-top: 120px; /* Optional: space above the footer */
+    text-align: right; /* Align text to the right */
 }
+
+
+

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Profile, Book, Author
+from .models import Profile, Book, Author, Tag, UserBook
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -48,3 +48,43 @@ class AddBookToProfileSerializer(serializers.Serializer):
         profile = user.profile
         profile.read_books.add(book)
         return book
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'tag_name']
+
+
+class UserBookSerializer(serializers.ModelSerializer):
+    tags = TagSerializer(many=True)
+    book_title = BookSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = UserBook
+        fields = ['book', ' book_title', 'tags', 'note']
+
+    def create(self, validated_data):
+        tags_data = validated_data.pop('tags', [])
+        user_book = UserBook.objects.create(**validated_data)
+
+        for tag_data in tags_data:
+            tag_name = tag_data.get['name']
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            user_book.tags.add(tag)
+
+        return user_book
+
+    def update(self, instance, validated_data):
+        tags_data = validated_data.pop('tags', [])
+        instance = validated_data.get('note', instance.note)
+        instance.save
+
+        if tags_data:
+            instance.tags.clear()
+            for tag_data in tags_data:
+                tag_name = tag_data.get('name')
+                tag, created = Tag.objects.get_or_create(name=tag_name)
+                instance.tags.add(tag)
+
+        return instance
