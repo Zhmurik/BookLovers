@@ -1,147 +1,49 @@
-{% extends 'base.html' %}
 <!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Books</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script>
-        function addToProfile(bookTitle) {
-            fetch(`/api/add-book/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCsrfToken() // Убедитесь, что добавляете CSRF токен
-                },
-                body: JSON.stringify({ title: bookTitle }) // Передача title
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Book added to profile!');
-                } else {
-                    throw new Error('Failed to add book');
-                }
-            })
-            .catch(error => console.error('Error adding book:', error));
-        }
-
-        function getCsrfToken() {
-            const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
-            return csrfTokenElement ? csrfTokenElement.value : '';
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchForm = document.getElementById('search-form');
-            const searchInput = document.getElementById('search-input');
-
-            function fetchBooks(page, searchQuery = '') {
-                fetch(`/api/book/?page=${page}&search=${encodeURIComponent(searchQuery)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const bookList = document.getElementById('book-list');
-                        bookList.innerHTML = '';  // Clear existing books
-
-                        data.results.forEach(book => {
-                            const li = document.createElement('li');
-                            li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-
-                            // Create a link for each book
-                            const link = document.createElement('a');
-                            link.href = `/books/${book.id}/`;  // Assuming the URL pattern for book details
-                            link.textContent = `${book.title} by ${book.author.name}`;
-                            link.classList.add('text-decoration-none');
-                            li.appendChild(link);
-
-                            // Create "Add to Profile" button
-                            const addButton = document.createElement('button');
-                            addButton.textContent = 'Add to Profile';
-                            addButton.classList.add('btn', 'btn-outline-success', 'ms-2'); // 'ms-2' adds margin start
-                            addButton.addEventListener('click', function() {
-                                addToProfile(book.title);
-                            });
-
-                            li.appendChild(addButton);
-                            bookList.appendChild(li);
-                        });
-
-                        // Update pagination controls
-                        const pagination = document.getElementById('pagination');
-                        pagination.innerHTML = '';  // Clear existing pagination controls
-                        const totalPages = Math.ceil(data.count / 8);  // Assuming 8 items per page
-
-                        // Previous button
-                        if (page > 1) {
-                            const prev = document.createElement('li');
-                            prev.classList.add('page-item');
-                            prev.innerHTML = `<a class="page-link" href="#" data-page="${page - 1}">Previous</a>`;
-                            pagination.appendChild(prev);
-                        }
-
-                        // Page buttons
-                        for (let i = 1; i <= totalPages; i++) {
-                            const li = document.createElement('li');
-                            li.classList.add('page-item');
-                            if (i === page) {
-                                li.classList.add('active');
-                                li.setAttribute('aria-current', 'page');
-                            }
-                            li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
-                            pagination.appendChild(li);
-                        }
-
-                        // Next button
-                        if (page < totalPages) {
-                            const next = document.createElement('li');
-                            next.classList.add('page-item');
-                            next.innerHTML = `<a class="page-link" href="#" data-page="${page + 1}">Next</a>`;
-                            pagination.appendChild(next);
-                        }
-
-                        // Add click event listener to pagination links
-                        document.querySelectorAll('#pagination .page-link').forEach(link => {
-                            link.addEventListener('click', function(event) {
-                                event.preventDefault();
-                                const page = event.target.getAttribute('data-page');
-                                if (page) {
-                                    fetchBooks(page, searchInput.value);
-                                }
-                            });
-                        });
-                    })
-                    .catch(error => console.error('Error fetching books:', error));
-            }
-
-            // Add event listener to search form
-            searchForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                fetchBooks(1, searchInput.value); // Load the first page with the search query
-            });
-
-            fetchBooks(1);  // Load the first page initially
-        });
-    </script>
-</head>
-<body>
     <h1 class="text-center">Library</h1>
     <hr>
-    <form id="search-form" class="d-flex mb-3">
-        <input id="search-input" class="form-control me-2" type="search" placeholder="Search by title or author" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-    <ul id="book-list" class="list-group"></ul>
-    <nav aria-label="Pagination">
-        <ul class="pagination justify-content-center" id="pagination"></ul>
-    </nav>
+    <ul id="book-list" class="list-group">
+        {% for book in books %}
+            <li class="list-group-item">
+                <h5><a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a></h5>
+                <p><strong>Author:</strong> {{ book.author }}</p>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No books available in the library.</li>
+        {% endfor %}
+    </ul>
+
+        <nav aria-label="Pagination">
+            <ul class="pagination justify-content-center">
+                {% if books.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ books.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for num in paginator.page_range %}
+                    <li class="page-item {% if books.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if books.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ books.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+
     <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-</body>
-</html>
 {% endblock %}
+
+
+
+
+
+

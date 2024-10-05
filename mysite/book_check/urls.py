@@ -2,25 +2,20 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .views import (BookView, SingleBookView, BookListView, ProfileView, author_detail,
-                    home, AddBookToProfileView, profile_view, author_list, BookSearchView, UserBookViewSet)
+from . import views
 
 router = DefaultRouter()
-router.register(r'user-books', UserBookViewSet, basename='userbook')
+# router.register(r'user-books', UserBookViewSet, basename='userbook')
 
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('books/', BookListView.as_view(), name='book-list'),
-    path('api/book/', BookView.as_view(), name='api-book-list'),
-    path('api/book/<int:pk>', SingleBookView.as_view()),
-    path('api/add-book/', AddBookToProfileView.as_view(), name='api-add-book'),
-    path('books/<int:pk>/', SingleBookView.as_view(), name='book-detail'),
-    path('api/profile/', ProfileView.as_view(), name='api-profile'),
-    path('profile/', profile_view, name='profile'),
-    path('author/<int:author_id>/', author_detail, name='author_detail'),
-    path('authors/', author_list, name='author-list'),
-    path('books/search/', BookSearchView.as_view(), name='book-search'),
+    path('', views.home, name='home'),
+    path('books/', views.book_list, name='book-list'),
+    path('books/<int:pk>/', views.single_book, name='book-detail'),
+    path('profile/', views.profile, name='profile'),
+    path('author/<int:author_id>/', views.author_detail, name='author_detail'),
+    path('authors/', views.author_list, name='author-list'),
+    path('books/search/', views.book_search, name='book-search'),
 ]
 
 urlpatterns += router.urls

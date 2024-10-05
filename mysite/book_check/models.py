@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, User
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
@@ -57,6 +58,8 @@ class UserBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
     note = models.TextField(blank=True, null=True)
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],
+                                              null=True, blank=True)
 
     def __str__(self):
         return f"{self.user_profile.user.username} - {self.book.title}"
@@ -65,7 +68,7 @@ class UserBook(models.Model):
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.IntegerField()
+
 
     def __str__(self):
         return f'{self.user.username} - {self.book.title}: {self.rating}'
