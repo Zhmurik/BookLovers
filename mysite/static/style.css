@@ -1,100 +1,122 @@
-/* General site container */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    padding-top: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.8)), url('/static/img/index.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: contrast(100%);
+
+}
+
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
     padding: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-top: 60px;
+    padding-bottom: 10px;
+    background-color: rgba(229, 210, 211, 0.5);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
-
-/* Header and footer styling */
-header, footer {
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #dee2e6;
-    border-top: 1px solid #dee2e6;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-/* Form styling */
-form {
+/*.container.mt-5 {*/
+/*        background-color: rgba(229, 210, 211, 0.q);*/
+/*}*/
+.containerProfile {
     padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin-top: 60px;
+    padding-bottom: 10px;
+    background-color: rgba(229, 210, 211, 0.8);
 }
 
-/* Input fields styling */
-form input[type="text"],
-form input[type="password"],
-form input[type="email"],
-form select,
-form textarea {
-    width: 100%;
+.list-group {
+    background-color: rgba(229, 210, 211, 0.8);
+}
+
+#book-list, #pagination {
+    background-color: rgba(229, 210, 211, 0.4);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.btn-custom {
+    background-color: #2C5F2D;
+    color: white
+}
+
+#book-list li {
+    background-color: rgba(229, 210, 211, 0.5);
+    margin-bottom: 10px;
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
-}
-
-/* Button styling */
-form button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    color: #ffffff;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
-}
-
-form button[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-/* Link styling */
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Utility classes for margins and padding */
-.mt-20 {
-    margin-top: 20px;
-}
-
-.mb-20 {
-    margin-bottom: 20px;
-}
-
-.p-20 {
-    padding: 20px;
+    border-radius: 5px;
 }
 
 .list-group-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: rgba(229, 210, 211, 0.8);
+    font-weight: bold;
+    font-size: 16px;
+    color: #2C5F2D;
+
+}
+.list-group-item a, a {
+    font-weight: bolder;
+    color: #2C5F2D;
+}
+ul li a {
+
+    text-decoration: none;
+    color: #2C5F2D;
+}
+main {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 60px;
 }
 
-.add-to-profile {
-    margin-left: auto; /* Расположить кнопку справа */
-    border: none;
-    background: transparent;
-    cursor: pointer;
+footer {
+    position: fixed;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 10px;
+    margin-top: auto;
+    text-align: right;
+    width: 100%;
 }
 
-.add-to-profile:hover {
-    background-color: #f8f9fa; /* Легкий фон при наведении */
+.text-decoration-book, .nav-link{
+    font-weight: bold;
+    font-size: 18px;
+    color: #2C5F2D;
+
+}
+
+.btn-outline-success {
+        color: #2C5F2D;
+}
+a.page-link {
+    color: #2C5F2D;
+}
+.text-muted a{
+    color: #2C5F2D;
+}
+
+.nav-link:hover {
+    color: darkgreen;
+}
+ .green-text {
+     font-weight: bolder;
+     color: darkgreen;
+}
+ .signup_body {
+
+}
+#book-list-link {
+    margin-top: 200px;
+    margin-left: 100px;
 }

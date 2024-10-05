@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'book_check.apps.BookCheckConfig',
     'users',
+    'api_book_check',
     'widget_tweaks',
 ]
 

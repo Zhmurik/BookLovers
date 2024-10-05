@@ -1,76 +1,50 @@
+<!DOCTYPE html>
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Profile - {{ profile.user.username }}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
     <h1 class="text-center">Hello, {{ profile.user.username }}!</h1>
     <hr>
-    <h3>Books you've read</h3>
-    {% if read_books %}
-        <ul>
-            {% for book in read_books %}
-                <li>
-                    <a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a> by {{ book.author.name }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>You haven't added any books yet.</p>
-    {% endif %}
-
+    <div class="containerProfile">
+        <h3>Books you've read</h3>
+        {% if read_books %}
+            <ul class="list-group">
+                {% for book in read_books %}
+                    <li class="list-group-item">
+                        <a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a> by {{ book.author.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">You haven't added any books yet.</p>
+        {% endif %}
+    </div>
     <hr>
-</div>
-<div>
-
-    <form id="add-book-form" method="POST">
-        <h5>Add a Book</h5>
-        {% csrf_token %}
-        <div class="mb-3">
-            <input type="text" id="book-title" name="book_title" class="form-control" placeholder="Enter book Title" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Book</button>
+    <form class="d-flex" action="{% url 'book-search' %}" method="get">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search books by title or author" aria-label="Search" value="{{ request.GET.q }}">
+        <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
+    <hr>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
 
-    <ul id="book-list" class="mt-3">
-        <!-- List of newly added books will be appended here -->
-    </ul>
 
-    <p id="message" class="mt-3 text-danger"></p>
-</div>
-
-<script>
-    document.getElementById('add-book-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const bookTitle = document.getElementById('book-title').value;
-
-        fetch('/api/add-book/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({ title: bookTitle })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.book) {
-                const bookList = document.getElementById('book-list');
-                const li = document.createElement('li');
-                li.textContent = `${data.book.title} by ${data.book.author}`;
-                bookList.appendChild(li);
-                document.getElementById('message').textContent = data.message;
-            } else {
-                document.getElementById('message').textContent = data.error || 'Failed to add book.';
-            }
-        })
-        .catch(error => {
-            console.error('Error adding book:', error);
-            document.getElementById('message').textContent = 'Failed to add book.';
-        });
-    });
-</script>
+{#<div>#}
+{##}
+{#    <form id="add-book-form" method="POST">#}
+{#        <h5>Add a Book</h5>#}
+{#        {% csrf_token %}#}
+{#        <div class="mb-3">#}
+{#            <input type="text" id="book-title" name="book_title" class="form-control" placeholder="Enter book Title" required>#}
+{#        </div>#}
+{#        <button type="submit" class="btn btn-outline-success">Add Book</button>#}
+{#    </form>#}
+{##}
+{#    <ul id="book-list" class="mt-3">#}
+{#    </ul>#}
+{##}
+{#    <p id="message" class="mt-3 text-danger"></p>#}
+{#</div>#}
 
 {% endblock %}
