@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Book, Profile, Author, Rating, Tag, UserBook
+from .models import Book, Profile, Author, Rating, Tag, UserBookInteraction
 
 
 class BookInline(admin.TabularInline):
@@ -9,7 +9,7 @@ class BookInline(admin.TabularInline):
 
 
 class UserBookInline(admin.TabularInline):
-    model = UserBook
+    model = UserBookInteraction
     extra = 1
 
 
@@ -33,7 +33,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 class UserBookAdmin(admin.ModelAdmin):
-    list_display = ('user_profile', 'book', 'note')
+    list_display = ('profile', 'book', 'note')
     search_fields = ('user_profile__user__username', 'book__title', 'note')
     list_filter = ('book__genres',)
 
@@ -47,4 +47,4 @@ admin.site.register(Profile)
 admin.site.register(Book)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Tag, TagAdmin)
-admin.site.register(UserBook, UserBookAdmin)
+admin.site.register(UserBookInteraction, UserBookAdmin)

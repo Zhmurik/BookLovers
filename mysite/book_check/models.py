@@ -61,16 +61,22 @@ class Tag(models.Model):
         return self.name
 
 
-class UserBook(models.Model):
-    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+class UserBookInteraction(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, blank=True)
     note = models.TextField(blank=True, null=True)
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],
                                               null=True, blank=True)
 
+    class Meta:
+        unique_together = ('profile', 'book')
+
+    def get_user_rating(book: Book, profile: Profile):
+        return UserBookInteraction.objects.filter(book=book, profile=profile).first().rating
+
     def __str__(self):
-        return f"{self.user_profile.user.username} - {self.book.title}"
+        return f"{self.profile.user.username} - {self.book.title}"
 
 
 class Rating(models.Model):

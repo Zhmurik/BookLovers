@@ -4,7 +4,7 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 
-from ..models import Book
+from ..models import Book, UserBookInteraction
 
 
 def single_book(request, pk):
@@ -14,11 +14,14 @@ def single_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'GET':
         allow_add = True
+        rating = None
         if request.user.is_authenticated and request.user.profile.is_read(book):
             allow_add = False
+            rating = UserBookInteraction.get_user_rating(book, request.user.profile)
         return TemplateResponse(request, "single_book.html", {
             "book": book,
-            "allow_add": allow_add
+            "allow_add": allow_add,
+            "rating": rating
         })
     elif request.method == 'POST' and request.user.is_authenticated:
         profile = request.user.profile
