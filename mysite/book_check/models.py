@@ -42,6 +42,14 @@ class Profile(models.Model):
                                 )
     read_books = models.ManyToManyField('Book', blank=True)
 
+    def is_read(self, book: Book):
+        return book in self.read_books.all()
+
+    def add_book(self, book: Book):
+        if not self.is_read(book):
+            self.read_books.add(book)
+            self.save()
+
     def __str__(self):
         return self.user.username
 

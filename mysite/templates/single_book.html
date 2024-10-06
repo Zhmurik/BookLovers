@@ -11,30 +11,13 @@
         <p><strong>Description:</strong></p>
         <p>{{ book.description }}</p>
     </div>
+    {% if allow_add %}
+    <form action="{% url 'book-detail' book.pk%}" method="POST"> <!-- Change 'add-book' to your actual URL name -->
+        {% csrf_token %}
+        <input type="hidden" name="book_id" value="{{ book.pk }}"> <!-- Hidden input to hold the book's pk -->
+        <button type="submit" class="btn btn-primary">Add to My Books</button> <!-- Button to submit the form -->
+    </form>
+    {% endif %}
     <a id="book-list-link" href="{% url 'book-list' %}">Back to Library</a>
 
 {% endblock %}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/api/book/')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const bookList = document.getElementById('book-list');
-                data.forEach(book => {
-                    const li = document.createElement('li');
-                    const a = document.createElement('a');
-                    a.href = `/books/${book.id}/`;  // Link to the HTML view
-                    a.innerHTML = `${book.title} - ${book.author} (Published: ${book.published_date})`;
-                    li.appendChild(a);
-                    bookList.appendChild(li);
-                });
-            })
-            .catch(error => console.error('Error fetching books:', error));
-    });
-</script>

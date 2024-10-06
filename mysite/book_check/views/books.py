@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
+from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 
@@ -11,15 +12,24 @@ def single_book(request, pk):
         Shows page with a single book in the library.
     """
     book = get_object_or_404(Book, pk=pk)
-    # if self.request.user.is_authenticated:
-    #     user_profile_id = self.request.user.id
-    #     user_book = UserBook.objects.get(user_profile_id=user_profile_id, book_id=book_id)
-    #     context['book_to_rating'] = user_book.rating
-    #     context['notes'] = user_book.note
-    #     context['tags'] = user_book.tags
-    return TemplateResponse( request, "single_book.html", {
-        "book": book,
-    })
+    if request.method == 'GET':
+        allow_add = True
+        if request.user.is_authenticated and request.user.profile.is_read(book):
+            allow_add = False
+        return TemplateResponse(request, "single_book.html", {
+            "book": book,
+            "allow_add": allow_add
+        })
+    elif request.method == 'POST' and request.user.is_authenticated:
+        profile = request.user.profile
+        profile.add_book(book)
+        return TemplateResponse(request, "single_book.html", {
+            "book": book,
+            "allow_add": False
+        })
+    else:
+        return HttpResponseNotFound("Method is not supported")
+
 
 def book_list(request):
     """
