@@ -5,8 +5,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from mysite.book_check.models import Book, Profile
-from mysite.book_check.serializers import BookSerializer, ProfileSerializer, AddBookToProfileSerializer
+from book_check.models import Book, Profile
+from book_check.serializers import BookSerializer, ProfileSerializer, AddBookToProfileSerializer
 
 
 class BookAPIView(generics.ListCreateAPIView):
