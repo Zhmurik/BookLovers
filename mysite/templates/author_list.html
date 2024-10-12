@@ -4,10 +4,10 @@
 <div class="container mt-5">
     <h1 class="text-center">List of Authors</h1>
     <hr>
-    <ul class="list-group">
+    <ul id="book-list"  class="booklist-group">
         {% for author in authors %}
-            <li class="list-group-item">
-                <a href="{% url 'author_detail' author.pk %}">{{ author.name }}</a>
+            <li class="booklist-group-item">
+                <a href="{% url 'author_detail' author.pk %}" class="book-link">{{ author.name }} </a>
             </li>
         {% endfor %}
     </ul>

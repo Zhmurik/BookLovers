@@ -10,10 +10,11 @@
     <div class="containerProfile">
         <h3>Books you've read</h3>
         {% if read_books %}
-            <ul class="list-group">
+            <ul class="booklist-group">
                 {% for book in read_books %}
-                    <li class="list-group-item">
-                        <a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a> by {{ book.author.name }}
+                    <li class="booklist-group-item">
+                        <a href="{% url 'book-detail' book.pk %}" class="book-link">{{ book.title }}</a>
+                        <span class="book-author">by {{ book.author.name }}</span>
                     </li>
                 {% endfor %}
             </ul>
@@ -27,7 +28,7 @@
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
     <hr>
-    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+
 
 
 {#<div>#}
@@ -36,7 +37,7 @@
 {#        <h5>Add a Book</h5>#}
 {#        {% csrf_token %}#}
 {#        <div class="mb-3">#}
-{#            <input type="text" id="book-title" name="book_title" class="form-control" placeholder="Enter book Title" required>#}
+{#            <input type="text" id="book-title" name="book_title" class="form-control" placeholder="Enter full book Title" required>#}
 {#        </div>#}
 {#        <button type="submit" class="btn btn-outline-success">Add Book</button>#}
 {#    </form>#}
@@ -46,5 +47,5 @@
 {##}
 {#    <p id="message" class="mt-3 text-danger"></p>#}
 {#</div>#}
-
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
 {% endblock %}

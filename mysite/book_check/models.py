@@ -54,17 +54,10 @@ class Profile(models.Model):
         return self.user.username
 
 
-class Tag(models.Model):
-    tag_name = models.CharField(max_length=50, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class UserBookInteraction(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.CharField(max_length=50, blank=True)
     note = models.TextField(blank=True, null=True)
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],
                                               null=True, blank=True)
@@ -72,17 +65,27 @@ class UserBookInteraction(models.Model):
     class Meta:
         unique_together = ('profile', 'book')
 
-    def get_user_rating(book: Book, profile: Profile):
-        return UserBookInteraction.objects.filter(book=book, profile=profile).first().rating
+    def get_user_rating(self, book: Book, profile: Profile):
+        return self.rating
+
+    def set_rating(self, new_rating):
+        self.rating = new_rating
+        self.save()
+
+    @classmethod
+    def get_or_none(cls, profile: Profile, book: Book):
+        try:
+            return cls.objects.get(profile=profile, book=book)
+        except cls.DoesNotExist:
+            return None
+
+    @classmethod
+    def get_rating_or_none(cls, profile: Profile, book: Book):
+        try:
+            return cls.objects.get(profile=profile, book=book).rating
+        except cls.DoesNotExist:
+            return None
 
     def __str__(self):
         return f"{self.profile.user.username} - {self.book.title}"
 
-
-class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-
-
-    def __str__(self):
-        return f'{self.user.username} - {self.book.title}: {self.rating}'

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 
 
-@login_required(login_url='login/')
+@login_required
 def profile(request):
     """
         Displaying page with information about the user and his read books.

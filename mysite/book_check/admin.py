@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Book, Profile, Author, Rating, Tag, UserBookInteraction
+from .models import Book, Profile, Author, UserBookInteraction
 
 
 class BookInline(admin.TabularInline):
@@ -38,13 +38,7 @@ class UserBookAdmin(admin.ModelAdmin):
     list_filter = ('book__genres',)
 
 
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('tag_name',)
-    search_fields = ('tag_name',)
-
-
 admin.site.register(Profile)
 admin.site.register(Book)
 admin.site.register(Author, AuthorAdmin)
-admin.site.register(Tag, TagAdmin)
 admin.site.register(UserBookInteraction, UserBookAdmin)

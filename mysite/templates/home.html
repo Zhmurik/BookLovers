@@ -3,12 +3,35 @@
 {% block title %}BookLovers{% endblock %}
 
 
-
 {% block content %}
-    {% block header %}<h1>Home Page Book Lovers - Welcome, {{ username }}!</h1>{% endblock %}
-    <div class="container mt-5">
-        <h1>Recommendation</h1>
-        <div class="card-group" style="width: 40rem;">
+
+    <h1> Book Lovers - Welcome, {{ username }}!</h1>
+    <h3 id="home-text"> This is&nbsp;a&nbsp;place where you can read, take notes and mark the history of&nbsp;what you read. </h3>
+    <p id="home-text2"><strong>You can also set your own rating for books and tags for books.</strong></p></h1>
+
+
+
+        <div class="container mt-5">
+        <h1>Our Library</h1>
+        <div class="card-group">
+            {% for book in books %}
+            <div class="card mx-2" style="width: 18rem;">
+                <img src="{% if book.cover_image %}{{ book.cover_image.url }}{% else %}{% static 'img/default_cover.jpg' %}
+                    {% endif %}" class="card-img-top" alt="Cover image">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">by {{ book.author.name }}</p>
+                    <a href="{% url 'book-detail' book.pk %}" class="btn btn-success mt-auto">Go to Book</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="container mt-5" >
+        <h1>Recommendation for you</h1>
+        <div class="card-group" style="width: 40rem;" id="recommendation-home">
             {% if recommended_books %}
                 {% for book in recommended_books %}
                 <div class="card mx-2" style="width: 18rem;">
@@ -27,20 +50,5 @@
     </div>
 
 
-    <div class="container mt-5">
-        <h1>All Books</h1>
-        <div class="card-group">
-            {% for book in books %}
-            <div class="card mx-2" style="width: 18rem;">
-                <img src="{% if book.cover_image %}{{ book.cover_image.url }}{% else %}{% static 'img/default_cover.jpg' %}
-                    {% endif %}" class="card-img-top" alt="Cover image">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text">by {{ book.author.name }}</p>
-                    <a href="{% url 'book-detail' book.pk %}" class="btn btn-success mt-auto">Go to Book</a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+
 {% endblock %}

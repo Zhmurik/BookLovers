@@ -8,23 +8,23 @@
     <title>Author {{ author.name }}</title>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container-singleBook">
         <h1>{{ author.name }}</h1>
-        <p><strong>Biography</strong> {{ author.biography }}</p>
-        <p><strong>Years of life</strong> {{ author.date_of_birth }} - {{ author.date_of_death }}</p>
+        <p><strong class="years-of-life">Biography:</strong><br> {{ author.biography }}</p>
+        <p><strong class="years-of-life">Years of life:</strong> {{ author.date_of_birth }} - {{ author.date_of_death }}</p>
     </div>
 
     <div class="container mt-5">
         <h2>Books:</h2>
         <ul>
             {% for book in author.books.all %}
-                <li><a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a></li>
+                <li><a href="{% url 'book-detail' book.pk %}" class="author-book-link">{{ book.title }}</a></li>
             {% endfor %}
         </ul>
     </div>
 
 
-    <a href="{% url 'home' %}">Back to Home</a>
+    <a href="{% url 'author-list' %}" class="btn btn-secondary mt-3">Back to Authors</a>
 </body>
 </html>
 {% endblock %}

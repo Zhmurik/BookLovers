@@ -1,23 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
+
+    <div class="container-singleBook">
         <h1>{{ book.title }}</h1>
         <h4 class="text-muted">
-            by <a href="{% url 'author_detail' book.author.pk %}">{{ book.author.name }}</a>
+            by <a href="{% url 'author_detail' book.author.pk %}"  class="book-link">{{ book.author.name }}</a>
         </h4>
         <p><strong>Published Date:</strong> {{ book.published_date }}</p>
         <p><strong>Genre:</strong> {{ book.get_genres_display }}</p>
         <p><strong>Description:</strong></p>
         <p>{{ book.description }}</p>
     </div>
-    {% if allow_add %}
-    <form action="{% url 'book-detail' book.pk%}" method="POST"> <!-- Change 'add-book' to your actual URL name -->
-        {% csrf_token %}
-        <input type="hidden" name="book_id" value="{{ book.pk }}"> <!-- Hidden input to hold the book's pk -->
-        <button type="submit" class="btn btn-primary">Add to My Books</button> <!-- Button to submit the form -->
-    </form>
-    {% endif %}
-    <a id="book-list-link" href="{% url 'book-list' %}">Back to Library</a>
 
+    {% if is_authenticated %}
+        {% if allow_add %}
+            <div class="d-flex justify-content-start">
+                <form action="{% url 'book-detail' book.pk %}" method="POST" class="me-2">
+                    {% csrf_token %}
+                    <input type="hidden" name="book_id" value="{{ book.pk }}">
+                    <button type="submit" class="btn btn-primary">Add to My Books</button>
+                </form>
+            </div>
+        {% endif %}
+        <div class="mt-4">
+            <h3>Your Notes and Review</h3>
+            {% if user_interaction %}
+                <p><strong>Rating:</strong> {{ user_interaction.rating }}</p>
+                <p><strong>Tags:</strong> {{ user_interaction.tags }}</p>
+                <p><strong>Notes:</strong> {{ user_interaction.note }}</p>
+            {% else %}
+                <p>No notes and review yet. Submit your review using the form above.</p>
+            {% endif %}</div>
+        <div>
+            <h3>Make a record</h3>
+            <form action="{% url 'book-detail' book.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="book_id_review" value="{{ book.pk }}">
+
+                <div class="form-rating">
+                    <label for="{{ form.rating.id_for_label }}" class="form-label">Rating:</label>
+                    {{ form.rating }}
+                </div>
+
+                <div class="form-tags">
+                    <label for="{{ form.tags.id_for_label }}" class="form-label">Tags:</label>
+                    {{ form.tags }}
+                </div>
+
+                <div class="form-note">
+                    <label for="{{ form.note.id_for_label }}" class="form-label">Note:</label>
+                    {{ form.note }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add to My Notes</button>
+            </form>
+        </div>
+    {% else %}
+         <p id="singlebook-text2"><strong>Sorry, you can`t use other features without authorization</strong></p></h1>
+    {% endif %}
+    <a href="{% url 'book-list' %}" class="btn btn-secondary mt-3">Back to Library</a>
 {% endblock %}
