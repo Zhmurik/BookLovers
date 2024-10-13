@@ -4,9 +4,6 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-# router.register(r'user-books', UserBookViewSet, basename='userbook')
-
-
 urlpatterns = [
     path('', views.home, name='home'),
     path('books/', views.book_list, name='book-list'),
