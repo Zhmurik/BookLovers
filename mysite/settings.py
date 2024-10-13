@@ -109,8 +109,11 @@ else:
     # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'azhmurkova',
+            'USER': 'azhmurkova',
+            'HOST': 'localhost',  # or the IP address of your PostgreSQL server
+            'PORT': '5432',  # default PostgreSQL port
         }
     }
 
