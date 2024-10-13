@@ -6,7 +6,7 @@ html, body {
 }
 body {
     padding-top: 50px;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.9)), url('/static/img/index.jpg');
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.9)), url("{% static 'img/index.jpg' %}");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
