@@ -1,3 +1,4 @@
 /db.json
 /db.sqlite3
-.idea/dataSources/
+.idea/
+.DS_Store
