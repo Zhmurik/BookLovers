@@ -108,17 +108,21 @@ input, select, textarea {
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-label.form-label {
-    font-size: 20px;
-    font-weight: bolder;
-    color: #2C5F2D
-}
-a.page-link {
-    background-color: #adc1b2;
-    color: #2C5F2D;
-    font-weight: normal;
-}
-a.page-link:hover {
-    background-color: #dae3dc;
-    color: #2C5F2D;
+
+    label.form-label {
+        font-size: 20px;
+        font-weight: bolder;
+        color: #2C5F2D
+    }
+
+    a.page-link {
+        background-color: #adc1b2;
+        color: #2C5F2D;
+        font-weight: normal;
+    }
+
+    a.page-link:hover {
+        background-color: #dae3dc;
+        color: #2C5F2D;
+    }
 }
