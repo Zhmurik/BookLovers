@@ -1,5 +1,6 @@
 from django.contrib.auth import login, logout
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.models import User
@@ -19,24 +20,24 @@ from django.shortcuts import render, redirect
 
 def LoginView(request):
     if request.method == 'POST':
-        form = CustomUserLoginForm(data=request.POST)
+        form = CustomUserLoginForm(data=request.POST, request=request)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Используйте имя URL, а не HTML файл
+                return redirect('home')
             else:
                 form.add_error(None, 'Invalid username or password')
     else:
-        form = CustomUserLoginForm()
+        form = CustomUserLoginForm(request=request)
 
-    return render(request, 'login.html', {'form': form})
+    return TemplateResponse(request, 'login.html', {'form': form})
 
 
 def LogoutView(request):
     logout(request)
-    return render(request, 'logout.html')
+    return TemplateResponse(request, 'logout.html')
 
 

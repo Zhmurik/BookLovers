@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+<html lang="en">
+{% block title %}{{ profile.user.username }} book notes{% endblock %}
+{% block content %}
+    <div class="text-center mb-4">
+        <h1>{{ book.title }}</h1>
+
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div class="col-md-7">
+            <div class="container-singleBook">
+                <h4 class="text-muted">
+                   by <a href="{% url 'author_detail' book.author.pk %}" class="book-link">{{ book.author.name }}</a>
+                </h4>
+                <p><strong>Description:</strong></p>
+                <p>{{ book.description }}</p>
+            </div>
+            <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
+        </div>
+
+        <div class="col-md-5">
+            <h3>Add Your Notes</h3>
+                {% if success %}
+                    <p style="color: green;">Книга успешно добавлена!</p>
+                {% endif %}
+
+            <form action="{% url 'add_notes' book.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="book_id_review" value="{{ book.pk }}">
+
+                <div class="form-rating">
+                    <label for="{{ form.rating.id_for_label }}" class="form-label">Rating:</label>
+                    {{ form.rating }}
+                </div>
+
+                <div class="form-tags">
+                    <label for="{{ form.tags.id_for_label }}" class="form-label">Tags:</label>
+                    {{ form.tags }}
+                </div>
+
+                <div class="form-note">
+                    <label for="{{ form.note.id_for_label }}" class="form-label">Note:</label>
+                    {{ form.note }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add to My Notes</button>
+            </form>
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</html>

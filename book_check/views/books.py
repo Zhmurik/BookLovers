@@ -1,9 +1,10 @@
 from warnings import catch_warnings
 
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import Paginator
+from django.contrib import messages
 from django.db.models import Q
 from django.http import HttpResponseNotFound
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
 from ..forms import UserBookForm
@@ -18,49 +19,20 @@ def single_book(request, pk):
 
     if request.method == 'GET':
         allow_add = True
-        rating = None
-        user_book_form = UserBookForm()
-        user_book_interaction = None
 
         if request.user.is_authenticated and request.user.profile.is_read(book):
-            user_book_interaction = UserBookInteraction.get_or_none(profile=request.user.profile, book=book)
             allow_add = False
-            rating = UserBookInteraction.get_rating_or_none(profile=request.user.profile, book=book)
-            user_book_form = UserBookForm(instance=user_book_interaction)
-
         return TemplateResponse(request, "single_book.html", {
             "book": book,
             "allow_add": allow_add,
-            "rating": rating,
-            "form": user_book_form,
-            "user_interaction": user_book_interaction,
             "is_authenticated": request.user.is_authenticated,
         })
     elif request.method == 'POST' and request.user.is_authenticated:
         profile = request.user.profile
         if 'book_id' in request.POST:
             profile.add_book(book)
-        elif 'book_id_review' in request.POST:
-            user_book_interaction = UserBookInteraction.objects.get_or_create(profile=request.user.profile, book=book )[0]
-            form = UserBookForm(request.POST, instance=user_book_interaction)
-            if form.is_valid():
-                review = form.save(commit=False)
-                review.profile= profile
-                review.book = book
-                review.save()
-                return TemplateResponse(request, 'single_book.html',
-                                        { 'form': form,
-                                        'profile': profile,
-                                          'book': book,
-                                          "is_authenticated": request.user.is_authenticated,
-                })
-            else:
-                form = UserBookForm(instance=user_book_interaction)
-                return TemplateResponse(request, "single_book.html", {
-                    "book": book,
-                    "form": form,
-                    "is_authenticated": request.user.is_authenticated,
-                })
+            messages.success(request, 'The book has been added successfully!')
+            return redirect('book-detail', pk=book.pk)
     else:
         return HttpResponseNotFound("Method is not supported")
 
