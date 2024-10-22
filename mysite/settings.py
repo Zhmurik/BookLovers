@@ -30,7 +30,10 @@ SECRET_KEY = os.environ.get(
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if not IS_HEROKU_APP:
+if IS_HEROKU_APP:
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 60
+else:
     DEBUG = True
 
 if IS_HEROKU_APP:
@@ -190,5 +193,3 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 60
