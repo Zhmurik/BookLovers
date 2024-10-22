@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django import forms
 
@@ -27,7 +27,23 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserLoginForm(AuthenticationForm):
+    remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput(), label='Remember Me')
+
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super(CustomUserLoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'placeholder': 'Enter your username'})
         self.fields['password'].widget.attrs.update({'placeholder': 'Enter your password'})
+
+    def clean(self):
+        cleaned_data = super().clean()
+        user = self.get_user()
+        if user is not None and self.request is not None:
+            login(self.request, user)
+            remember_me = cleaned_data.get('remember_me')
+            if remember_me:
+                self.request.session.set_expiry(1209600)
+            else:
+                self.request.session.set_expiry(0)
+
+        return cleaned_data

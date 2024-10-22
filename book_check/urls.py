@@ -12,6 +12,7 @@ urlpatterns = [
     path('author/<int:author_id>/', views.author_detail, name='author_detail'),
     path('authors/', views.author_list, name='author-list'),
     path('books/search/', views.book_search, name='book-search'),
+    path('book/<int:pk>/add_notes/', views.add_notes, name='add_notes'),
 ]
 
 urlpatterns += router.urls

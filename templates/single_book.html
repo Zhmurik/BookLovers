@@ -23,39 +23,16 @@
                 </form>
             </div>
         {% endif %}
-        <div class="mt-4">
-            <h3>Your Notes and Review</h3>
-            {% if user_interaction %}
-                <p><strong>Rating:</strong> {{ user_interaction.rating }}</p>
-                <p><strong>Tags:</strong> {{ user_interaction.tags }}</p>
-                <p><strong>Notes:</strong> {{ user_interaction.note }}</p>
-            {% else %}
-                <p>No notes and review yet. Submit your review using the form above.</p>
-            {% endif %}</div>
-        <div>
-            <h3>Make a record</h3>
-            <form action="{% url 'book-detail' book.pk %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="book_id_review" value="{{ book.pk }}">
-
-                <div class="form-rating">
-                    <label for="{{ form.rating.id_for_label }}" class="form-label">Rating:</label>
-                    {{ form.rating }}
-                </div>
-
-                <div class="form-tags">
-                    <label for="{{ form.tags.id_for_label }}" class="form-label">Tags:</label>
-                    {{ form.tags }}
-                </div>
-
-                <div class="form-note">
-                    <label for="{{ form.note.id_for_label }}" class="form-label">Note:</label>
-                    {{ form.note }}
-                </div>
-
-                <button type="submit" class="btn btn-primary">Add to My Notes</button>
-            </form>
-        </div>
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     {% else %}
          <p id="singlebook-text2"><strong>Sorry, you can`t use other features without authorization</strong></p></h1>
     {% endif %}

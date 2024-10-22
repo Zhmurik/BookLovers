@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="signup_body w-50 p-4 border rounded shadow-sm bg-light">
+    <div class="signup_body">
         {% for error in form.non_field_errors %}{{ error }}
         {% endfor %}
         <h3> Please login</h3>
@@ -21,11 +21,14 @@
                 </label>
                 {{ form.password|add_class:"form-control" }}
             </div>
+            <div style="display: flex; align-items: center;">
+                {{ form.remember_me.label_tag }} <span style="margin-left: 5px;">{{ form.remember_me }}</span>
+            </div>
             <div class="d-grid">
-                <button class="btn btn-outline-success green-text"  type="submit">Log in</button>
+                <button class="btn btn-outline-success green-text"  type="submit">Login</button>
             </div>
             <div class="text-center mt-3">
-                <a href="/reset_password" class="d-block mb-2">Reset password</a>
+                <a href="/reset_password" class="reset-link">Reset password</a>
                 <p>Don't have an account?</p>
                 <a class="btn btn-outline-success green-text" type="submit" href="/signup">Sign Up for Book Lovers</a>
             </div>
